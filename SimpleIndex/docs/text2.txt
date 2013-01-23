@@ -1,0 +1,8 @@
+#include <stdio.h>
+
+int main(){
+	int i = 0;
+	// This is the bug! Dont need add one
+	i++;
+	return 0;
+}
