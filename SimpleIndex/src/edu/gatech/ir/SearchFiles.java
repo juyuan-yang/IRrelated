@@ -20,7 +20,7 @@ public class SearchFiles {
 	public static void main(String[] args) {
 		String index = "index";
 	    String field = "contents";
-	    String toSearch = "exception";
+	    String toSearch = "Wrapper";
 	    int maxHits = 10;
 	    
 	    IndexReader reader;

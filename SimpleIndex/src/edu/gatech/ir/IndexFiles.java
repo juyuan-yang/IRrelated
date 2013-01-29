@@ -75,6 +75,9 @@ public class IndexFiles {
 					}
 				}
 			} else {
+				if(!file.getCanonicalPath().endsWith(".java")){
+					return;
+				}
 				FileInputStream fis;
 				try {
 					fis = new FileInputStream(file);

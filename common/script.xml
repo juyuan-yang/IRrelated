@@ -1,0 +1,68 @@
+<project name="bpgen_experiments" basedir=".">
+    <!-- the values of these two properties should be passed via command line -->
+    <property name="fault" value=""/>
+    <property name="lib.junit" value="libs/junit-4.10.jar"/>	
+    <property name="lib.junit.runner" value="libs/junit_runner.jar"/>
+	
+    <property name="tmp.src" value="tmp/src"/>
+    <property name="tmp.test" value="tmp/test"/>
+    <property name="tmp.bin" value="tmp/src_bin"/>
+    <property name="tmp.test.bin" value="tmp/test_bin"/>
+
+	<property name="compile.version" value="1.6"/>
+	
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+	<delete dir="${tmp.src}"/>
+        <delete dir="${tmp.test}"/>
+        <delete dir="${tmp.bin}"/>
+        <delete dir="${tmp.test.bin}"/>
+
+	<mkdir dir="${tmp.src}"/>
+	<mkdir dir="${tmp.test}"/>
+	<mkdir dir="${tmp.bin}"/>
+	<mkdir dir="${tmp.test.bin}"/>
+    </target>
+
+    <target name="jtopas" depends="init">
+	    <!-- Compile the jtopas source of version n with seeded fault m-->
+	    <unzip src="src/apache_common_collection_3.2.1.zip" dest="${tmp.src}"/>
+	    <property name="jtopas.tmp.src.dir" value="${tmp.src}/"/>
+
+	    <javac srcdir="${jtopas.tmp.src.dir}" destdir="${tmp.bin}" debug="true" />
+	    <!-- copy the resources in the source directory into the binary directory -->
+	<copy todir="${tmp.bin}">
+            <fileset dir="${jtopas.tmp.src.dir}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.class"/>
+			</fileset>
+        </copy>
+
+	    <!-- Compile the junit tests for jtopas of version n -->
+	    <property name="jtopas.test.src.dir" value="junit/f${fault}/"/>	                
+	    <javac srcdir="${jtopas.test.src.dir}" destdir="${tmp.test.bin}" debug="true" target="${compile.version}"  source="${compile.version}"> 
+		    <classpath>
+			    <pathelement path="${tmp.bin}"/>
+			    <pathelement location="${lib.junit}"/>
+		    </classpath> 
+	    </javac>
+            <copy todir="${tmp.test.bin}">
+                <fileset dir="${jtopas.test.src.dir}"> 
+			<!-- <exclude name="**/*.java"/> -->
+                    <exclude name="**/*.class"/>
+				</fileset>
+            </copy>
+
+	<!-- Run the junit tests -->
+        <java classname="edu.gatech.ir.JunitRunner" fork="true" maxmemory="1024m">
+		<classpath>
+			<pathelement path="${tmp.test.bin}"/>
+			<pathelement path="${tmp.bin}"/>
+			<pathelement path="${lib.junit.runner}"/>
+			<pathelement path="${lib.junit}"/>
+		</classpath>
+		<arg value="org.apache.commons.collections.TestAll"/>  
+	</java>
+    </target>
+</project>	

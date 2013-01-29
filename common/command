@@ -1,0 +1,1 @@
+ant -Dfault=1 -f script.xml jtopas
