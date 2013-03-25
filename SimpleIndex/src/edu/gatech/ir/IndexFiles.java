@@ -27,7 +27,7 @@ public class IndexFiles {
 		String docsPath = "docs";
 		String indexPath = "index";
 		boolean create = true;
-
+		
 		final File docDir = new File(docsPath);
 		if (!docDir.exists() || !docDir.canRead()) {
 			System.out
@@ -35,6 +35,7 @@ public class IndexFiles {
 			System.exit(1);
 		}
 
+		Class clazz = IndexFiles.class;
 		Date start = new Date();
 		try {
 			System.out.println("Indexing to directory '" + indexPath + "'...");
