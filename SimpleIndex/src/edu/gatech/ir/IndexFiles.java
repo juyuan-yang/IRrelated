@@ -24,7 +24,7 @@ import org.apache.lucene.util.Version;
 public class IndexFiles {
 
 	public static void main(String[] args) {
-		String docsPath = "docs";
+		String docsPath = "docs";//"testDoc";
 		String indexPath = "index";
 		boolean create = true;
 		
